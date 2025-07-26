@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future Partner Compatibility Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4CAF50"/>
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+    body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #00ff99, #0066ff); display: flex; align-items: center; justify-content: center; }
+    #splash { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #00ff99, #0066ff); display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 2; }
+    .heart { width: 100px; height: 90px; background: red; border-radius: 20px; animation: beat 1s infinite; }
+    @keyframes beat {0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); }}
+    .container { background: #fff; padding: 20px; border-radius: 15px; max-width: 90%; margin: 20px auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); display: none; }
+    h1 { text-align: center; color: #4CAF50; font-size: 1.8rem; }
+    .clue { margin: 15px 0; font-size: 1rem; display: flex; align-items: center; }
+    input[type="checkbox"] { transform: scale(1.5); margin-right: 10px; }
+    .score { font-size: 1.4rem; font-weight: bold; margin-top: 20px; text-align: center; color: #333; }
+    .result { text-align: center; margin-top: 10px; font-size: 1rem; color: #555; }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <div class="heart"></div>
+    <h2 style="color:white; margin-top: 20px;">Loading...</h2>
+  </div>
+  <div class="container" id="main-content">
+    <h1>Compatibility Tracker</h1>
+    <form id="trackerForm">
+      <div class="clue"><input type="checkbox" class="clueBox"> Naam A, S, N se start hota hai</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Mulaqat social event/workshop/mutual friend ke through</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Pehli mulaqat par comfortable & familiar vibe</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Expressive smile aur noticeable eyes</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Lively, intelligent, communicative personality</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Apne career aur independence ko priority deti hai</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Conversations natural aur effortless hoti hain</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Meeting ke baad regular chats/calls shuru hote hain</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Aapko lagta hai woh emotionally uplift karti hai</div>
+      <div class="clue"><input type="checkbox" class="clueBox"> Aapke friends/family notice karte hain closeness</div>
+    </form>
+    <div class="score" id="score">Score: 0 / 100</div>
+    <div class="result" id="result"></div>
+  </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }, 3000);
+
+    const checkboxes = document.querySelectorAll('.clueBox');
+    const scoreDisplay = document.getElementById('score');
+    const resultDisplay = document.getElementById('result');
+    checkboxes.forEach(box => {
+      box.addEventListener('change', () => {
+        let score = 0;
+        checkboxes.forEach(cb => { if (cb.checked) score += 10; });
+        scoreDisplay.textContent = `Score: ${score} / 100`;
+        if (score >= 80) { resultDisplay.textContent = "Highly likely future partner"; resultDisplay.style.color = "green"; }
+        else if (score >= 60) { resultDisplay.textContent = "Potential match, aur samay do"; resultDisplay.style.color = "orange"; }
+        else { resultDisplay.textContent = "Kam probability"; resultDisplay.style.color = "red"; }
+      });
+    });
+  </script>
+</body>
+</html>
